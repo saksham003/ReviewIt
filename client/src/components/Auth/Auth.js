@@ -9,12 +9,14 @@ import useStyles from './styles'
 import Input from './Input';
 import Icon from './icon'
 import { signIn, signUp } from '../../actions/auth';
+import { Alert } from '@material-ui/lab';
 
 const initalState = {firstName:'', lastName:'', email:'', password:'', confirmPassword:''}
 
 const Auth = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState(initalState);
+  const [error, setError] = useState('');
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -22,16 +24,22 @@ const Auth = () => {
   const handleChange = (ev) => {
     setFormData({ ...formData, [ev.target.name]: ev.target.value })
   };
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.preventDefault();
     
     if(isSignup){
-      dispatch(signUp(formData, history))
+      const errorMessage = await dispatch(signUp(formData, history))
+      setError(errorMessage);
+
     }else {
-      dispatch(signIn(formData, history))
+      const errorMessage = await dispatch(signIn(formData, history))
+      setError(errorMessage);
     }
   };
-  const switchMode = () => setIsSignup((prev) => !prev)
+  const switchMode = () => {
+    setIsSignup((prev) => !prev);
+    setError('');
+  };
 
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
@@ -64,6 +72,7 @@ const Auth = () => {
                   <Input name='lastName' label='Last Name' handleChange={handleChange} half />
                 </>
               )}
+              {error && <Alert style={{ width: '100%', margin: '10px auto' }} severity='error'>{error}</Alert>}
               <Input name='email' label='Email Address' handleChange={handleChange} type='text'/>
               <Input name='password' label='Password' handleChange={handleChange} type='password'/>
               {isSignup && <Input name='confirmPassword' label='Confirm Password' handleChange={handleChange} type='password'/>}

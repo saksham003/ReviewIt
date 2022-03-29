@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardActions, CardContent, CardMedia, Button, Typography, Tooltip, ButtonBase } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, Tooltip, ButtonBase, Chip } from '@material-ui/core';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbUpAltOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -11,7 +11,7 @@ import useStyles from './styles';
 import { deletePost, likePost } from "../../../actions/posts";
 import { useHistory } from "react-router-dom";
 
-const Post = ({ post, setCurrentId, asRecommendation }) => {
+const Post = ({ post, setCurrentId, asRecommendation, setModalOpen }) => {
   const classes = useStyles();
   const user = JSON.parse(localStorage.getItem('profile'));
   const dispatch = useDispatch();
@@ -42,6 +42,7 @@ const Post = ({ post, setCurrentId, asRecommendation }) => {
                 size="small"
                 onClick={(e) => {
                   e.stopPropagation();
+                  setModalOpen(true);
                   setCurrentId(post._id);
                 }}
               >
@@ -52,9 +53,11 @@ const Post = ({ post, setCurrentId, asRecommendation }) => {
         </div>
         <CardContent>
           <div className={classes.details}>
-            <Typography variant="body2" color="textSecondary">
-              {post.tags.map((tag) => `#${tag} `)}
-            </Typography>
+            <div className={classes.chipGrid}>
+              {post.tags.map((tag) => (
+                <Chip style={{margin: '1px'}} size="small" label={`${tag}`} key={`${tag}`} />
+              ))}
+            </div>
           </div>
           <Typography variant="h5" gutterBottom>
             {post.title}

@@ -42,5 +42,9 @@ export default makeStyles((theme) => ({
   },
   commentInnerContainer: {
     height: '200px', overflowY: 'auto', marginRight: '30px'
+  },
+  chipGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
   }
 }));

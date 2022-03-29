@@ -39,7 +39,7 @@ export default makeStyles({
   details: {
     display: 'flex',
     justifyContent: 'space-between',
-    // margin: '20px',
+    marginBottom: '6px'
   },
   title: {
     padding: '0 16px',
@@ -53,4 +53,8 @@ export default makeStyles({
       display: 'block',
       textAlign: 'initial',
     },
+  chipGrid: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  }
 });

@@ -9,6 +9,7 @@ export const signIn = (formData, history) => async (dispatch) => {
         history.push('/')
     } catch (error) {
         console.log(error);
+        return error.response.data.message
     }
 }
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import {Paper, Typography, CircularProgress, Divider, Grid } from '@material-ui/core';
+import {Paper, Typography, CircularProgress, Divider, Grid, Chip } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams, useHistory } from 'react-router-dom';
@@ -41,7 +41,12 @@ const PostDetails = () => {
       <div className={classes.card}>
         <div className={classes.section}>
           <Typography variant="h3" component="h2">{post.title}</Typography>
-          <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography>
+          {/* <Typography gutterBottom variant="h6" color="textSecondary" component="h2">{post.tags.map((tag) => `#${tag} `)}</Typography> */}
+          <div className={classes.chipGrid}>
+            {post.tags.map((tag) => (
+              <Chip style={{margin: '3px'}} label={`${tag}`} key={`${tag}`} />
+            ))}
+          </div>
           <Typography gutterBottom variant="body1" component="p">{post.message}</Typography>
           <Typography variant="h6">Created by: {post.name}</Typography>
           <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
