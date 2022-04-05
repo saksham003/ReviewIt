@@ -57,7 +57,8 @@ export default makeStyles((theme) => ({
     marginLeft: 'auto'
   },
   navContainer: {
-    marginBottom: '16px'
+    marginBottom: '16px',
+    // backgroundColor: theme.palette.tertiary.main,
   },
   name: {
     marginLeft: '10px',

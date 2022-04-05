@@ -10,7 +10,7 @@ export const signIn = async (req, res) => {
   const { email, password } = req.body;
 
 	try {
-		const existingUser = await User.findOne({ email });
+		const existingUser = await User.findOne({ email }).exec();
 		if (!existingUser) return res.status(404).json({ message: 'User dosn\'t exist' });
 
 		const isPasswordCorrect = await bcrypt.compare(password, existingUser.password);
@@ -28,7 +28,7 @@ export const signUp = async (req, res) => {
 	const { email, password, confirmPassword, firstName, lastName } = req.body;
 
 	try {
-		const existingUser = await User.findOne({ email })
+		const existingUser = await User.findOne({ email }).exec();
 		if (existingUser) return res.status(400).json({ message: 'User already exist.' });
 
 		if (password !== confirmPassword) return res.status(400).json({ message: 'Passwords don\'t match' });

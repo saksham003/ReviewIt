@@ -1,11 +1,10 @@
 import { FETCH_ALL, COMMENT, FETCH_BY_SEARCH, FETCH_POST, CREATE, UPDATE, DELETE, LIKE, START_LOADING, STOP_LOADING } from '../constants/actionTypes';
 import * as api from '../api';
-import { Stop } from '@material-ui/icons';
 
-export const getPosts = (page) => async (dispatch) => {
+export const getPosts = (query) => async (dispatch) => {
   try {
     dispatch({type: START_LOADING });
-    const { data } = await api.fetchPosts(page);
+    const { data } = await api.fetchPosts(query);
     dispatch({type: STOP_LOADING})
 
     dispatch({ type: FETCH_ALL, payload: data });
@@ -17,9 +16,10 @@ export const getPost = (id) => async (dispatch) => {
   try {
     dispatch({type: START_LOADING });
     const { data } = await api.fetchPost(id);
-    dispatch({type: STOP_LOADING})
 
     dispatch({ type: FETCH_POST, payload: data });
+    dispatch({type: STOP_LOADING})
+
   } catch (error) {
   }
 };

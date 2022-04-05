@@ -2,14 +2,24 @@ import mongoose from 'mongoose';
 import PostMessage from '../models/postMessage.js';
 import router from '../routes/posts.js';
 
-export const getPosts = async (req, res) => {
-  const { page } = req.query;
-  try {
-    const LIMIT = 6;
-    const startIndex = (Number(page) - 1) * LIMIT;
-    const total = await PostMessage.countDocuments({});
+const SORT = {'NEW': {_id: -1}, 'OLD': {_id: 1}, 'RATED_HIGH':{rating: -1}, 'RATED_LOW': {rating:1}, 'LIKED': {likesCount: -1}, 'COMMENTED': {commentsCount: -1}};
 
-    const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+export const getPosts = async (req, res) => {
+  const { page, category, search, tags, sortBy } = req.query;
+  const query = {}; 
+  var orderBy = SORT['NEW'];
+  try {
+    if (category) query.category = category;
+    if (search) query.title = new RegExp(search, 'i');
+    if (tags) query.tags = { $in: tags.split(',') };
+    if (sortBy) orderBy = SORT[sortBy]
+
+    const LIMIT = 8;
+    const startIndex = (Number(page) - 1) * LIMIT;
+    const total = await PostMessage.countDocuments(query);
+
+    // const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+    const posts = await PostMessage.find(query).sort(orderBy).limit(LIMIT).skip(startIndex) 
 
     res.status(200).json({ data: posts, currentPage: Number(page), totalPages: Math.ceil(total / LIMIT) });
   } catch (error) {
@@ -29,10 +39,24 @@ export const getPost = async (req, res) => {
 }
 
 export const getPostsBySearch = async (req, res) => {
-  const { searchQuery, tags } = req.query;
+  const { category, search, tags, sortBy } = req.query;
+  const query = {}; 
+  var orderBy = null;
   try {
-    const title = new RegExp(searchQuery, 'i');
-    const posts = await PostMessage.find({ $or: [{ title }, { tags: { $in: tags.split(',') } }] });
+    // const posts = await PostMessage.find({$or: [{ title }, { tags: { $in: tags.split(',') } }] });
+
+    if (category) query.category = category;
+    if (search) {
+      const title = new RegExp(search, 'i');
+      query.title = title;
+    }
+    if (tags) query.tags = { $in: tags.split(',') };
+    if (sortBy) {
+      orderBy = SORT[sortBy];
+    }
+
+    const posts = sortBy ? await PostMessage.find(query).sort(orderBy) : await PostMessage.find(query);
+
     res.status(200).json({ data: posts })
   } catch (error) {
     res.status(404).json({ message: error.message });
@@ -86,8 +110,10 @@ export const likePost = async (req, res) => {
   const index = post.likes.findIndex((id) => id === String(req.userId));
   if (index === -1) {
     post.likes.push(req.userId);
+    post.likesCount += 1;
   } else {
     post.likes = post.likes.filter((id) => id !== String(req.userId));
+    post.likesCount -= 1;
   }
 
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new: true})
@@ -107,6 +133,7 @@ export const commentPost = async (req, res) => {
   const post = await PostMessage.findById(id);
 
   post.comments.push(value);
+  post.commentsCount += 1;
 
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new: true})
 

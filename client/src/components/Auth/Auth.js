@@ -29,11 +29,11 @@ const Auth = () => {
     
     if(isSignup){
       const errorMessage = await dispatch(signUp(formData, history))
-      setError(errorMessage);
+      errorMessage && setError(errorMessage);
 
     }else {
       const errorMessage = await dispatch(signIn(formData, history))
-      setError(errorMessage);
+      errorMessage && setError(errorMessage);
     }
   };
   const switchMode = () => {

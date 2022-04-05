@@ -1,0 +1,2 @@
+export const CATEGORY = { ALL: '', MOVIE: "Movie", TV_SHOW: "TV Show", BOOK: "Book", ANIME: "Anime", MANGA: "Manga" };
+export const SORT_BY = { NEW: 'NEW', OLD: 'OLD', RATED_HIGH: "RATED_HIGH", RATED_LOW: "RATED_LOW", LIKED: 'LIKED', COMMENTED: 'COMMENTED' };

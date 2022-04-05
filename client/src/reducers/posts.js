@@ -3,9 +3,9 @@ import { FETCH_ALL, FETCH_POST, CREATE, UPDATE, DELETE, LIKE, COMMENT, FETCH_BY_
 export default (state = { isLoading: true, posts: []}, action) => {
   switch (action.type) {
     case START_LOADING:
-      return { ... state, isLoading: true }
+      return { ...state, isLoading: true }
     case STOP_LOADING:
-      return { ... state, isLoading: false }
+      return { ...state, isLoading: false }
     case DELETE:
       return { ...state, posts: state.posts.filter((post) => post._id !== action.payload) }
     case UPDATE:

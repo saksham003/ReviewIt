@@ -22,8 +22,8 @@ export default makeStyles((theme) => ({
     flex: '2 2 0',
   },
   imageSection: {
-    marginLeft: '20px',
-    flex: '1.5 1 0',
+    marginRight: '20px',
+    flex: '1 1 0',
     [theme.breakpoints.down('sm')]: {
       marginLeft: 0,
     },
@@ -38,7 +38,7 @@ export default makeStyles((theme) => ({
     display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', borderRadius: '15px', height: '39vh',
   },
   commentOuterContainer: {
-    display: 'flex', justifyContent: 'space-between'
+    display: 'flex', flexDirection: 'column', justifyContent: 'space-between'
   },
   commentInnerContainer: {
     height: '200px', overflowY: 'auto', marginRight: '30px'
@@ -46,5 +46,26 @@ export default makeStyles((theme) => ({
   chipGrid: {
     display: 'flex',
     flexWrap: 'wrap',
+  },
+  mediaCard: {
+    height: 0,
+    paddingTop: '80%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundBlendMode: 'darken',
+  },
+  modalTitle: {
+    position: 'relative'
+  },
+  closeButton: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+  },
+  displayLinebreak: {
+  whiteSpace: 'pre-line',
+  padding: '25px 0'
+  },
+  ratingContainer: {
+    display:'flex', justifyContent:'space-between', flexDirection:'column',
   }
 }));

@@ -22,7 +22,7 @@ const Posts = ({ setCurrentId, setModalOpen }) => {
     ) : (
       <Grid className={classes.container} container alignItems='stretch' spacing={3}>
         {posts.map((post) => (
-          <Grid key={post._id} item xs={12} sm={12} md={4} lg={3}>
+          <Grid key={post._id} item xs={12} sm={6} md={4} lg={3}>
             <Post post={post} setCurrentId={setCurrentId} asRecommendation={false} setModalOpen={setModalOpen}/>
           </Grid>
         ))}

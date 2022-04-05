@@ -10,10 +10,22 @@ API.interceptors.request.use((req) => {
     return req;
 });
 
-export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
+export const fetchPosts = async (query) => {
+  var url = `/posts?page=${query.page ||  1}`;
+  if (query.category) url += `&category=${query.category}`;
+  if (query.search) url += `&search=${query.search}`;
+  if (query.tags) url += `&tags=${query.tags}`;
+  if (query.sortBy) url += `&sortBy=${query.sortBy}`;
+  const res = await API.get(url);
+  return res;
+}
+//  API.get(`/posts?page=${query.page}&category=${searchQuery.category || ''}&searchQuery=${searchQuery.search || ''}&tags=${searchQuery.tags || ''}&sortBy=${searchQuery.sortBy || ''}`);
+// }
 export const fetchPost = (id) => API.get(`/posts/${id}`);
-export const fetchPostsBySearch = (searchQuery) =>
-  API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags || 'none'}`);
+export const fetchPostsBySearch = async (searchQuery) =>{
+  const res = await API.get(`/posts/search?category=${searchQuery.category || ''}&search=${searchQuery.search || ''}&tags=${searchQuery.tags || ''}&sortBy=${searchQuery.sortBy || ''}`);
+  return res;
+}
 export const createPost = (newPost) => API.post('/posts', newPost);
 export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
 export const deletePost = (id) => API.delete(`/posts/${id}`);
