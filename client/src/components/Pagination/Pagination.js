@@ -4,7 +4,7 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
-import { getPosts } from '../../actions/posts';
+import { getPosts, getTags } from '../../actions/posts';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -30,6 +30,7 @@ const Paginate = ({ page, queries }) => {
       console.log("This is agy")
       dispatch(getPosts({ ...queries, page }));
     }
+    dispatch(getTags());
   },[page, dispatch])
 
   return (

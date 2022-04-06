@@ -78,8 +78,8 @@ export default makeStyles((theme) => ({
     color: '#BDBDBD',
   },
   inputRoot: {
-    color: 'inherit',
-    background: '#EEEEEE'
+    // color: 'inherit',
+    background: props => props.currentTheme == 'LIGHT' ? '#EEEEEE' : 'inherit',
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
@@ -100,7 +100,8 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-between',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
-      padding: '10px 0'
+      padding: '10px 15px',
+      gap: '10px',
     }
   },
   left: {

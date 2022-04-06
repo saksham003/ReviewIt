@@ -89,9 +89,9 @@ const Form = ({ currentId, handleFormClose }) => {
         <Button onClick={handleSubmit} className={classes.buttonSubmit} variant='contained' color='primary' size='large'  fullWidth> 
           Submit
         </Button>
-        <Button  variant='contained' color='secondary' size='small' onClick={clear} fullWidth> 
+        {/* <Button  variant='contained' color='secondary' size='small' onClick={clear} fullWidth> 
           Clear
-        </Button>
+        </Button> */}
       </form>
     </div>
   );

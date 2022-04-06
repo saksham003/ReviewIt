@@ -42,7 +42,7 @@ const PostDetails = () => {
   
   useEffect(() => {
     if (post?._id === id) {
-      dispatch(getPosts({ category: post?.category, tags: post?.tags.join(',') }));
+      dispatch(getPosts({ category: post?.category, tags: post?.tags.join(','), recommend: true }));
       // dispatch(getPostBySearch({ category: post?.category, tags: post?.tags.join(',') }));
     }
   }, [post, dispatch])
@@ -98,7 +98,7 @@ const PostDetails = () => {
           <Typography variant="body1">{moment(post.createdAt).fromNow()}</Typography>
           <Divider style={{ margin: '20px 0' }} />
           <CommentSection post={post} />
-          <Divider style={{ margin: '20px 0' }} />
+          {/* <Divider style={{ margin: '20px 0' }} /> */}
         </div>
       </div>
 

@@ -5,13 +5,13 @@ import router from '../routes/posts.js';
 const SORT = {'NEW': {_id: -1}, 'OLD': {_id: 1}, 'RATED_HIGH':{rating: -1}, 'RATED_LOW': {rating:1}, 'LIKED': {likesCount: -1}, 'COMMENTED': {commentsCount: -1}};
 
 export const getPosts = async (req, res) => {
-  const { page, category, search, tags, sortBy } = req.query;
+  const { page, category, search, tags, sortBy, recommend } = req.query;
   const query = {}; 
   var orderBy = SORT['NEW'];
   try {
     if (category) query.category = category;
     if (search) query.title = new RegExp(search, 'i');
-    if (tags) query.tags = { $in: tags.split(',') };
+    if (tags) query.tags = recommend ? { $in : tags.split(',')} : { $all: tags.split(',') };
     if (sortBy) orderBy = SORT[sortBy]
 
     const LIMIT = 8;
@@ -138,4 +138,17 @@ export const commentPost = async (req, res) => {
   const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {new: true})
 
   res.json(updatedPost)
+}
+
+export const getTags = async (req, res) => {
+  try{
+    // const tags = await PostMessage.find({}, { tags: 1, _id: 0 });
+    // const tagsArray = tags.reduce((acc, curr) => acc.concat(curr.tags), []);
+    // const uniqueTags = [...new Set(tagsArray)];
+    const uniqueTags = await PostMessage.distinct('tags');
+
+    res.json(uniqueTags);
+  } catch(error) {
+    res.status(404).json({ message: error.message });
+  }
 }

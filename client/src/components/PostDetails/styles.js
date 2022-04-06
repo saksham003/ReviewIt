@@ -41,7 +41,13 @@ export default makeStyles((theme) => ({
     display: 'flex', flexDirection: 'column', justifyContent: 'space-between'
   },
   commentInnerContainer: {
-    height: '200px', overflowY: 'auto', marginRight: '30px'
+    maxHeight: '200px', 
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: '300px'
+    },
+    overflowY: 'auto', 
+    borderRadius: '15px', padding: '10px 15px',
+    // background: '#F5F5F5',
   },
   chipGrid: {
     display: 'flex',

@@ -13,9 +13,13 @@ export default makeStyles((theme) => ({
   },
   itemContainer: {
     display: 'flex',
+    gap: '10px',
+    width: '200px',
+    flexDirection: 'column',
     justifyContent: 'center',
-    padding: '5px 5px',
+    alignItems: 'center',
     textTransform: 'none',
+    // margin: '10px 20px'
   },
   heading: {
     color: 'rgba(0,183,255, 1)',
@@ -54,15 +58,25 @@ export default makeStyles((theme) => ({
     marginRight: 'auto'
   },
   right: {
-    marginLeft: 'auto'
+    marginLeft: 'auto',
+    // display: 'flex', alignItems: 'center',
   },
   navContainer: {
     marginBottom: '16px',
     // backgroundColor: theme.palette.tertiary.main,
   },
-  name: {
-    marginLeft: '10px',
-    marginRight: '20px',
-    paddingTop: '4px'
+  // name: {
+  //   marginLeft: '10px',
+  //   marginRight: '20px',
+  //   paddingTop: '4px'
+  // },
+  modalContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '20px'
+  },
+  avatar: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
   }
 }));

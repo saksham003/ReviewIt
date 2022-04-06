@@ -16,6 +16,7 @@ export const fetchPosts = async (query) => {
   if (query.search) url += `&search=${query.search}`;
   if (query.tags) url += `&tags=${query.tags}`;
   if (query.sortBy) url += `&sortBy=${query.sortBy}`;
+  if (query.recommend) url += `&recommend=${query.recommend}`;
   const res = await API.get(url);
   return res;
 }
@@ -34,3 +35,5 @@ export const commentPost = (value, id) => API.post(`posts/${id}/comments`, { val
 
 export const signIn = (formData) => API.post('/users/signIn', formData)
 export const signUp = (formData) => API.post('/users/signUp', formData)
+
+export const getTags = () => API.get('/posts/tags');

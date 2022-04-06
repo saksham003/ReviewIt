@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { Typography, TextField, Button } from '@material-ui/core'
+import { Typography, TextField, Button, Paper } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 
 import useStyles from './styles'
@@ -25,7 +25,7 @@ const CommentSection = ({post}) => {
   return (
     <div>
       <div className={classes.commentOuterContainer}>
-        <div className={classes.commentInnerContainer}>
+        <Paper elevation={0} variant='outlined' className={classes.commentInnerContainer}>
           <Typography gutterBottom variant="h6">
             Comments
           </Typography>
@@ -35,7 +35,7 @@ const CommentSection = ({post}) => {
             </Typography>
           ))}
           <div ref={commentsRef} />
-        </div>
+        </Paper>
         { user?.result?.name && (
           <div styles={{ width: '70%' }}>
             <Typography gutterBottom variant="subtitle1">Write a comment</Typography>

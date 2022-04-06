@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Container, Grow, Grid, Paper, AppBar, Button, Fab, Dialog, DialogTitle, DialogContent, IconButton, Toolbar, InputBase, Select, MenuItem, FormControl, InputLabel  } from '@material-ui/core';
+import { Container, Grow, Grid, Paper, AppBar, Button, Fab, Dialog, DialogTitle, DialogContent, IconButton, Toolbar, InputBase, Select, MenuItem, FormControl, InputLabel, Chip, DialogActions  } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 // import ChipInput from 'material-ui-chip-input';
 import CloseIcon from '@material-ui/icons/Close';
 import SearchIcon from '@material-ui/icons/Search';
+import { useSelector } from 'react-redux';
 
 import { getPosts } from '../../actions/posts';
 import Posts from '../Posts/Posts';
@@ -20,20 +21,25 @@ function useQuery() {
 
 
 const Home = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const query = useQuery();
   const history = useHistory();
   const page = query.get('page') || 1;
+  const { tags: allTags } = useSelector((state) => state.posts);
+  const { theme: currentTheme } = useSelector((state) => state.theme);
+  const classes = useStyles({ currentTheme });
 
   const inititalQueries = { search: '', category: '', sortBy: SORT_BY.NEW, tags: [] };
 
   const [currentId, setCurrentId] = useState(null);
   const [queries, setQueries] = useState(inititalQueries);
   const [modalOpen, setModalOpen] = useState(false);
+  const [tagModalOpen, setTagModalOpen] = useState(false);
 
   const handleFormOpen = () => setModalOpen(true);
   const handleFormClose = () => setModalOpen(false);
+  const handleTagModalClose = () => setTagModalOpen(false)
+  const handleTagModalOpen = () => setTagModalOpen(true)
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter')searchPost();
@@ -49,9 +55,20 @@ const Home = () => {
     setQueries({ ...queries, sortBy: ev.target.value });
     dispatch(getPosts({ ...queries, sortBy: ev.target.value }));
   }
-  // const handleAdd = (tag) => setTags([...tags, tag]);
-  // const handleDelete = (tagToDelete) =>
-  //   setTags(tags.filter((tag) => tag !== tagToDelete));
+  const handleTagClick = (tag) => {
+    if (queries.tags.includes(tag)) {
+      setQueries({ ...queries, tags: queries.tags.filter(t => t !== tag) });
+    }else{
+      setQueries({  ...queries, tags: [...queries.tags, tag] })
+    }
+    console.log(queries.tags);
+  }
+  const handleApplyTags = () => {
+    history.push(`/posts?page=${page}&tags=${queries.tags.join(',')}`);
+    dispatch(getPosts({ ...queries, tags: queries.tags.join(',') }));
+    handleTagModalClose();
+  }
+
 
   const searchPost = () => {
     if (queries.search.trim() || queries.tags) {
@@ -74,7 +91,26 @@ const Home = () => {
                   <InputBase placeholder="Search..." classes={{ root: classes.inputRoot, input: classes.inputInput, }} value={queries.search} onKeyPress={handleKeyPress} onChange={(e) => setQueries({...queries, search: e.target.value})}  />
                 </div>
                 {/* <ChipInput variant="outlined" className={classes.chipInput} value={tags}  onAdd={handleAdd} onDelete={handleDelete} label="Search Tags" /> */}
-                <Button onClick={searchPost} variant='contained' color='primary'>Search</Button>
+                <Button onClick={searchPost} style={{marginRight: '10px'}} variant='contained' color='primary'>Search</Button>
+                <Button onClick={handleTagModalOpen} variant='outlined' color='primary' > Tags </Button>
+                <Dialog open={tagModalOpen} onClose={handleTagModalClose} >
+                  <DialogTitle className={classes.modalTitle} onClose={handleTagModalClose}>
+                    <div>Search By Tags</div>
+                    <IconButton className={classes.closeButton}  onClick={handleTagModalClose}>
+                      <CloseIcon />
+                    </IconButton>
+                  </DialogTitle>
+                  <DialogContent dividers>
+                    {allTags.map((tag) => (
+                      queries.tags.includes(tag) ? 
+                        <Chip style={{margin: '3px'}} color='primary' label={`${tag}`} key={`${tag}`} onClick={() => handleTagClick(tag)} /> :
+                        <Chip style={{margin: '3px'}} label={`${tag}`} key={`${tag}`} onClick={() => handleTagClick(tag)} />
+                    ))}
+                  </DialogContent>
+                  <DialogActions style={{display: 'flex', justifyContent: 'center'}}>
+                    <Button onClick={handleApplyTags} variant='contained' color="primary"> Apply </Button>
+                  </DialogActions>
+                </Dialog>
               </div>
               <div className={classes.right}>
                 <FormControl style={{ minWidth: '120px'}}>

@@ -12,3 +12,9 @@ export const STOP_LOADING = 'STOP_LOADING';
 
 export const AUTH = 'AUTH'
 export const LOGOUT = 'LOGOUT'
+
+export const TAGS = 'TAGS'
+
+export const SET_THEME = 'SET_THEME'
+export const LIGHT = 'LIGHT'
+export const DARK = 'DARK'

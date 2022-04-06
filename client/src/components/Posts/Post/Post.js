@@ -65,7 +65,7 @@ const Post = ({ post, setCurrentId, asRecommendation, setModalOpen }) => {
         <CardContent>
           { !asRecommendation && <div className={classes.details}>
             <div className={classes.chipGrid}>
-              <Chip color='primary' label={`${post.category}`}size='small' />
+              <Chip color='secondary' label={`${post.category}`} size='small' />
               {post.tags.map((tag) => (
                 <Chip style={{margin: '1px'}} size="small" label={`${tag}`} key={`${tag} in post`} />
               ))}
